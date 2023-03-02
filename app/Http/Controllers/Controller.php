@@ -108,7 +108,7 @@ class Controller extends BaseController
         return $percentage;
     }
 
-    public function get_price_after_discount($price, $percentage){
+    public static function get_price_after_discount($price, $percentage){
         return $price - (($price / 100) * $percentage);
     }
 

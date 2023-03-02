@@ -36,7 +36,7 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'students'], function(
         Route::post('sendCode', 'App\Http\Controllers\site\student\authentication\resetPasswored@sendCode');
     });
 
-    Route::get('/offers', 'App\Http\Controllers\site\student\offers@index');
+    Route::get('/offers', 'App\Http\Controllers\site\student\OfferController@index');
     Route::post('generate_agora_rtm_token', 'App\Http\Controllers\site\student\home@generate_agora_rtm_token')->middleware('checkJWTToken:student');
 
     Route::group(['middleware' => 'checkJWTToken:student'], function(){
@@ -71,14 +71,12 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'students'], function(
         });
 
         Route::group(['prefix' => 'offers'], function(){
-            Route::post('/take', 'App\Http\Controllers\site\student\offers@take_offer');;
+            Route::post('/take', 'App\Http\Controllers\site\student\OfferController@take_offer');;
         });
 
         Route::group(['prefix' => 'notifications'], function(){
-            Route::get('/', 'App\Http\Controllers\site\student\notificaitons@index');
-            Route::get('/pagination', 'App\Http\Controllers\site\student\notificaitons@index_paginate');
-
-            Route::get('/notifications-count', 'App\Http\Controllers\site\student\notificaitons@notification_count');
+            Route::get('/', 'App\Http\Controllers\site\student\NotificaitonController@index');
+            Route::get('/notifications-count', 'App\Http\Controllers\site\student\NotificaitonController@notification_count');
         });
 
         Route::group(['prefix' => 'schedules'], function(){
@@ -99,8 +97,6 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'students'], function(
         Route::post('/buy/video', 'App\Http\Controllers\site\student\home@buy_video');
 
         Route::post('leave', 'App\Http\Controllers\site\student\home@leave');
-
-        Route::get('/lives', 'App\Http\Controllers\site\student\lives@lives');
 
         Route::post('logout', 'App\Http\Controllers\site\student\authentication\auth@logout');
     });

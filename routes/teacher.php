@@ -81,12 +81,6 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'teachers'], function(
             Route::post('cancel', 'App\Http\Controllers\site\teacher\videos@cancel_video');
         });
 
-        Route::group(['prefix' => 'lives'], function(){
-            Route::get('/', 'App\Http\Controllers\site\teacher\lives@lives');
-            Route::post('add', 'App\Http\Controllers\site\teacher\lives@add_live');
-            Route::post('cancel', 'App\Http\Controllers\site\teacher\lives@cancel_live');
-        });
-
         Route::group(['prefix' => 'notifications'], function(){
             Route::get('/', 'App\Http\Controllers\site\teacher\notificaitons@index');
             Route::get('/pagination', 'App\Http\Controllers\site\teacher\notificaitons@index_pagination');

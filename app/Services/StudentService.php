@@ -62,6 +62,7 @@ class StudentService extends Controller
             $student->Image->save();
         }
     }
+
     
     public function student_response($request, $token){
         $student = auth('student')->user();
@@ -100,5 +101,17 @@ class StudentService extends Controller
             'student'   => new studentResource($student),
             'token'     => $token,
         ], 200);
+    }
+
+    public function checkBalance($student, $price){
+        if($student->balance - $price < 0)
+            return false;
+
+        return true;
+    }
+
+    public function addToBalance($student, $amount){
+        $student->balance   += $amount;
+        $student->save();
     }
 }
