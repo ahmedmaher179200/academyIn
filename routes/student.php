@@ -26,10 +26,10 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'students'], function(
 
     Route::get('/', 'App\Http\Controllers\Controller@test');
     
-    Route::post('login', 'App\Http\Controllers\site\student\authentication\auth@login');
-    Route::post('register', 'App\Http\Controllers\site\student\authentication\auth@register');
+    Route::post('login', 'App\Http\Controllers\site\student\authentication\AuthController@login');
+    Route::post('register', 'App\Http\Controllers\site\student\authentication\AuthController@register');
 
-    Route::post('get_dialing_code', 'App\Http\Controllers\site\student\authentication\auth@get_dialing_code');
+    Route::post('get_dialing_code', 'App\Http\Controllers\site\student\authentication\AuthController@get_dialing_code');
     Route::group(['prefix' => 'passwordReset'], function(){
         Route::post('/', 'App\Http\Controllers\site\student\authentication\resetPasswored@new_resetPassword')->middleware('checkJWTToken:student');
         Route::post('checkCode', 'App\Http\Controllers\site\student\authentication\resetPasswored@checkCode');
@@ -48,26 +48,26 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'students'], function(
         Route::post('/rating/add', 'App\Http\Controllers\site\student\home@add_rating');
 
         Route::group(['prefix' => 'myProfile'], function(){
-            Route::get('/', 'App\Http\Controllers\site\student\authentication\profile@myProfile');
-            Route::post('/setup_profile', 'App\Http\Controllers\site\student\authentication\profile@updateYear');
-            Route::post('changePassword', 'App\Http\Controllers\site\student\authentication\profile@changePassword');
-            Route::post('changeImage', 'App\Http\Controllers\site\student\authentication\profile@change_image');
-            Route::post('update', 'App\Http\Controllers\site\student\authentication\profile@updateProfile');
+            Route::get('/', 'App\Http\Controllers\site\student\authentication\ProfileController@myProfile');
+            Route::post('/setup_profile', 'App\Http\Controllers\site\student\authentication\ProfileController@updateYear');
+            Route::post('changePassword', 'App\Http\Controllers\site\student\authentication\ProfileController@changePassword');
+            Route::post('changeImage', 'App\Http\Controllers\site\student\authentication\ProfileController@changeImage');
+            Route::post('update', 'App\Http\Controllers\site\student\authentication\ProfileController@updateProfile');
         });
 
         Route::group(['prefix' => 'questions'], function(){
-            Route::get('/', 'App\Http\Controllers\site\student\questions@index');
-            Route::get('/my-question', 'App\Http\Controllers\site\student\questions@myQuestion');
-            Route::post('/create', 'App\Http\Controllers\site\student\questions@create');
-            Route::post('/delete', 'App\Http\Controllers\site\student\questions@delete');
-            Route::post('/edit', 'App\Http\Controllers\site\student\questions@update');
+            Route::get('/', 'App\Http\Controllers\site\student\QuestionController@index');
+            Route::get('/my-question', 'App\Http\Controllers\site\student\QuestionController@myQuestion');
+            Route::post('/create', 'App\Http\Controllers\site\student\QuestionController@create');
+            Route::post('/delete', 'App\Http\Controllers\site\student\QuestionController@delete');
+            Route::post('/edit', 'App\Http\Controllers\site\student\QuestionController@update');
         });
 
         Route::group(['prefix' => 'answers'], function(){
-            Route::get('/', 'App\Http\Controllers\site\student\answers@index');
-            Route::post('/create', 'App\Http\Controllers\site\student\answers@create');
-            Route::post('/delete', 'App\Http\Controllers\site\student\answers@delete');
-            Route::post('/edit', 'App\Http\Controllers\site\student\answers@update');
+            Route::get('/', 'App\Http\Controllers\site\student\AnswerController@index');
+            Route::post('/create', 'App\Http\Controllers\site\student\AnswerController@create');
+            Route::post('/delete', 'App\Http\Controllers\site\student\AnswerController@delete');
+            Route::post('/edit', 'App\Http\Controllers\site\student\AnswerController@update');
         });
 
         Route::group(['prefix' => 'offers'], function(){

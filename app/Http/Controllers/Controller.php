@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Mail;
 
 class Controller extends BaseController
 {
+    use response;
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, response;
     public function upload_image($image, $path, $width = 300, $height = 300){
         /*

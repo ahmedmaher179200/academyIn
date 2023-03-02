@@ -13,15 +13,18 @@ use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\site\student\authentication\verification;
+use App\Services\StudentService;
 
 class resetPasswored extends Controller
 {
     use response;
 
     public $verification;
-    public function __construct(verification $verification)
+    public $StudentService;
+    public function __construct(verification $verification, StudentService $StudentService)
     {
         $this->verification         = $verification;
+        $this->StudentService = $StudentService;
     }
     ////////sent code /////////////
 
@@ -183,7 +186,7 @@ class resetPasswored extends Controller
             return $this->faild(trans('auth.login faild'), 400, 'E00');
         }
 
-        return auth::student_response($request, $token);
+        return $this->StudentService->student_response($request, $token);
     } 
 
     public function new_resetPassword(Request $request) {
@@ -203,6 +206,6 @@ class resetPasswored extends Controller
             return $this->faild(trans('auth.passwored or phone is wrong'), 404, 'E04');
         }
 
-        return auth::student_response($request, $token);
+        return $this->StudentService->student_response($request, $token);
     } 
 }
