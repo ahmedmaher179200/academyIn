@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 class answers extends Controller
 {
     use response;
+    public $firbaseNotifications;
     public function __construct(firbaseNotifications $firbaseNotifications)
     {
         $this->firbaseNotifications = $firbaseNotifications;

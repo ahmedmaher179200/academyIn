@@ -59,7 +59,6 @@ class teacherResource extends JsonResource
             'rating'        => $this->getRating(),
             'image'         => $this->getImage(),
             'years'         => yearResource::collection($years),
-            'videos'        => videoResource::collection($this->Videos),
         ];
     }
 }

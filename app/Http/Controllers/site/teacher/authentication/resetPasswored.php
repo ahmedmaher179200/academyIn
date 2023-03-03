@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\site\teacher\authentication\verification;
 use App\Http\Resources\teacherResource;
 use App\Models\Teacher;
+use App\Services\TeacherService;
 use App\Traits\response;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -19,9 +20,11 @@ class resetPasswored extends Controller
 {
     use response;
     public $verification;
-    public function __construct(verification $verification)
+    public $TeacherService;
+    public function __construct(verification $verification, TeacherService $TeacherService)
     {
         $this->verification         = $verification;
+        $this->TeacherService         = $TeacherService;
     }
     ////////sent code /////////////
 
@@ -160,7 +163,7 @@ class resetPasswored extends Controller
             return $this->faild(trans('auth.login faild'), 400, 'E00');
         }
         
-        return auth::teacher_response($request, $token);
+        return $this->TeacherService->teacher_response($request, $token);
     } 
 
     public function new_resetPassword(Request $request) {
@@ -180,6 +183,6 @@ class resetPasswored extends Controller
             return $this->faild(trans('auth.passwored or phone is wrong'), 404, 'E04');
         }
 
-        return auth::teacher_response($request, $token);
+        return $this->TeacherService->teacher_response($request, $token);
     } 
 }

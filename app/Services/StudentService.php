@@ -62,7 +62,6 @@ class StudentService extends Controller
             $student->Image->save();
         }
     }
-
     
     public function student_response($request, $token){
         $student = auth('student')->user();
