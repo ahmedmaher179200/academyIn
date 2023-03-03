@@ -16,11 +16,11 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 */
 
 date_default_timezone_set('Africa/cairo');
-Route::post('/balanceCharging/{student_id}', 'App\Http\Controllers\site\student\payment@balance_charging');
-Route::post('/payment/return', 'App\Http\Controllers\site\student\payment@payment_return');
+Route::post('/balanceCharging/{student_id}', 'App\Http\Controllers\site\student\BalanceChargerController@balance_charging');
+Route::post('/payment/return', 'App\Http\Controllers\site\student\BalanceChargerController@payment_return');
 
 Route::group(['middleware' => ['changeLang'] ,'prefix' => 'students'], function(){
-    Route::post('/payment/check', 'App\Http\Controllers\site\student\payment@payment_check');
+    Route::post('/payment/check', 'App\Http\Controllers\site\student\BalanceChargerController@payment_check');
 
     Route::post('/whiteboard/token', 'App\Http\Controllers\site\student\home@whiteboard');
 
@@ -84,8 +84,8 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'students'], function(
             Route::post('/cancel', 'App\Http\Controllers\site\student\home@cancel_schedule');
         });
 
-        Route::group(['prefix' => 'payment'], function(){
-            Route::post('/request', 'App\Http\Controllers\site\student\payment@payment_request')->middleware('checkJWTToken:student');
+        Route::group(['prefix' => 'balance-charger'], function(){
+            Route::post('/request', 'App\Http\Controllers\site\student\BalanceChargerController@payment_request')->middleware('checkJWTToken:student');
         });
 
         Route::get('/home', 'App\Http\Controllers\site\student\home@index');

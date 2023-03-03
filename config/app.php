@@ -14,7 +14,8 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-
+    'paytabs_key'   => env('paytabs_key', 'SBJNDHHR62-JDJKRB2RJT-G9ZDKK2LJZ'),
+    'paytabs_profile_id'   => env('paytabs_profile_id', 94917),
     /*
     |--------------------------------------------------------------------------
     | Application Environment

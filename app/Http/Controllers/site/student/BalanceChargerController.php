@@ -5,43 +5,37 @@ namespace App\Http\Controllers\site\student;
 use App\Http\Controllers\Controller;
 use App\Models\Billing;
 use App\Models\Student;
+use App\Services\PaymentService;
+use App\Services\StudentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 
-class payment extends Controller
+class BalanceChargerController extends Controller
 {
+    public $StudentService;
+    public $PaymentService;
+    public function __construct(StudentService $StudentService,
+                                PaymentService $PaymentService)
+    {
+        $this->StudentService = $StudentService;
+        $this->PaymentService = $PaymentService;
+    }
+
+
     public function payment_request(Request $request){
-        // validate registeration request
         $validator = Validator::make($request->all(), [
             'amount'     => 'required|integer',
         ]);
 
-        if($validator->fails()){
+        if($validator->fails())
             return $this::faild($validator->errors()->first(), 403);
-        }
+        $student = auth('student')->user();
 
-        //get student
-        if (! $student = auth('student')->user()) {
-            return $this::faild(trans('auth.student not found'), 404, 'E04');
-        }
-
-        $response = Http::withHeaders([
-            'authorization' => env('paytabs_key'),
-            'Content-Type'  => 'application/json'
-        ])->post('https://secure-egypt.paytabs.com/payment/request', [
-            "profile_id"=>         env('paytabs_profile_id'),
-            "tran_type"=>          "sale",
-            "tran_class"=>         "ecom",
-            "cart_description"=>   "AS SDAs",
-            "cart_id"=>            time() . rand(1,10000),
-            "cart_currency"=>      "EGP",
-            "cart_amount"=>        $request->get('amount'),
-            "hide_shipping"=>      true,
-            "callback"=>           url('api/balanceCharging/' . $student->id),
-            "return"=>             url('api/payment/return'),
-        ]);
+        $response = $this->PaymentService->payment_request($request->amount,
+                                                            url('api/balanceCharging/' . $student->id),
+                                                            url('api/payment/return'));
 
         return response()->json([
             'successful'        => true,
@@ -58,8 +52,7 @@ class payment extends Controller
             return false;
         }
 
-        $student->balance += $request->tran_total;
-        $student->save();
+        $this->StudentService->addToBalance($student, $request->tran_total);
 
         Billing::create([
             'type' => 0,
@@ -97,21 +90,13 @@ class payment extends Controller
     }
 
     public function payment_check(Request $request){
-        //validation
         $validator = Validator::make($request->all(), [
             'tran_ref'       => 'required',
         ]);
-        if($validator->fails()){
+        if($validator->fails())
             return $this::faild($validator->errors()->first(), 403, 'E03');
-        }
 
-        $response = Http::withHeaders([
-            'authorization' => env('paytabs_key'),
-            'Content-Type'  => 'application/json'
-        ])->post('https://secure-egypt.paytabs.com/payment/query', [
-            "profile_id"    => 94917,
-            "tran_ref"      => $request->get('tran_ref')
-        ]);
+        $response = $this->PaymentService->check($request->get('tran_ref'));
 
         return json_decode($response, true);
     }
