@@ -18,10 +18,6 @@ class classType_availableClassResource extends JsonResource
      */
     public function toArray($request)
     {
-        // $date = date_create(date('Y-m-d H:i:s'));
-        // date_add($date, date_interval_create_from_date_string('5 minute'));
-        // $new_date = date_format($date, 'Y-m-d H:i:s');
-
         $available_classes = Available_class::where('class_type_id', $this->id)
                                             ->where('subject_id', $request->get('subject_id'))
                                             ->where('teacher_id', $request->get('teacher_id'))
@@ -35,8 +31,6 @@ class classType_availableClassResource extends JsonResource
                                             ->get()
                                             ->where('student_classes_count', '<', env('MAX_STUDENT_IN_CLASS'));
 
-        // $subject = Subject::find($request->get('subject_id'));
-        // $teacher = Teacher::find($request->get('teacher_id'));
         return [
             'id'                => $this->id,
             'long'              => $this->long,

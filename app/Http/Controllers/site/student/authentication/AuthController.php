@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers\site\student\authentication;
 
-use Aloha\Twilio\Twilio;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\students\CreateRequest;
 use App\Http\Requests\Api\students\LoginRequest;
-use App\Http\Resources\studentResource;
 use App\Models\Student;
 use App\Services\StudentService;
-use App\Traits\response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -42,6 +36,14 @@ class AuthController extends Controller
         $student->save();
 
         FacadesAuth::guard('student')->logout();
+
+        return $this->success(trans('auth.success'), 200);
+    }
+
+    public function leave(){
+        $student = auth('student')->user();
+
+        $student->update(['online' => 0]);
 
         return $this->success(trans('auth.success'), 200);
     }

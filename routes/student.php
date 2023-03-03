@@ -22,7 +22,7 @@ Route::post('/payment/return', 'App\Http\Controllers\site\student\BalanceCharger
 Route::group(['middleware' => ['changeLang'] ,'prefix' => 'students'], function(){
     Route::post('/payment/check', 'App\Http\Controllers\site\student\BalanceChargerController@payment_check');
 
-    Route::post('/whiteboard/token', 'App\Http\Controllers\site\student\home@whiteboard');
+    Route::post('/whiteboard/token', 'App\Http\Controllers\site\student\AgoraController@whiteboard');
 
     Route::get('/', 'App\Http\Controllers\Controller@test');
     
@@ -37,7 +37,7 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'students'], function(
     });
 
     Route::get('/offers', 'App\Http\Controllers\site\student\OfferController@index');
-    Route::post('generate_agora_rtm_token', 'App\Http\Controllers\site\student\home@generate_agora_rtm_token')->middleware('checkJWTToken:student');
+    Route::post('generate_agora_rtm_token', 'App\Http\Controllers\site\student\AgoraController@generate_agora_rtm_token')->middleware('checkJWTToken:student');
 
     Route::group(['middleware' => 'checkJWTToken:student'], function(){
         Route::group(['prefix' => 'verification'], function(){
@@ -45,7 +45,7 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'students'], function(
             Route::post('sendCode', 'App\Http\Controllers\site\student\authentication\verification@sendCode');
         });
 
-        Route::post('/rating/add', 'App\Http\Controllers\site\student\home@add_rating');
+        Route::post('/rating/add', 'App\Http\Controllers\site\student\RatingController@create');
 
         Route::group(['prefix' => 'myProfile'], function(){
             Route::get('/', 'App\Http\Controllers\site\student\authentication\ProfileController@myProfile');
@@ -80,25 +80,23 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'students'], function(
         });
 
         Route::group(['prefix' => 'schedules'], function(){
-            Route::get('/', 'App\Http\Controllers\site\student\home@schedule');
-            Route::post('/cancel', 'App\Http\Controllers\site\student\home@cancel_schedule');
+            Route::get('/', 'App\Http\Controllers\site\student\ScheduleController@schedule');
+            Route::post('/cancel', 'App\Http\Controllers\site\student\ScheduleController@cancel');
         });
 
         Route::group(['prefix' => 'balance-charger'], function(){
             Route::post('/request', 'App\Http\Controllers\site\student\BalanceChargerController@payment_request')->middleware('checkJWTToken:student');
         });
 
-        Route::get('/home', 'App\Http\Controllers\site\student\home@index');
+        Route::get('/home', 'App\Http\Controllers\site\student\HomeController@show');
 
-        Route::post('/reservations', 'App\Http\Controllers\site\student\home@my_reservations');
+        Route::post('/reservations', 'App\Http\Controllers\site\student\HomeController@my_reservations');
 
-        Route::post('/available_classes', 'App\Http\Controllers\site\student\home@available_classes');
-        Route::post('/booking', 'App\Http\Controllers\site\student\home@booking');
-        Route::post('/buy/video', 'App\Http\Controllers\site\student\home@buy_video');
+        Route::post('/available_classes', 'App\Http\Controllers\site\student\ScheduleController@available_classes');
+        Route::post('/booking', 'App\Http\Controllers\site\student\ScheduleController@booking');
 
-        Route::post('leave', 'App\Http\Controllers\site\student\home@leave');
+        Route::post('leave', 'App\Http\Controllers\site\student\authentication\AuthController@leave');
 
         Route::post('logout', 'App\Http\Controllers\site\student\authentication\auth@logout');
     });
 });
-Route::get('test', 'App\Http\Controllers\site\student\home@test');
