@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Http\Controllers\Controller;
+use App\Models\Available_class;
+use App\Models\Student;
 use App\Traits\response;
 use Illuminate\Support\Facades\DB;
 
@@ -13,6 +15,52 @@ class AvailableClassService extends Controller
     public function __construct(TeacherNotificationService $TeacherNotificationService)
     {
         $this->TeacherNotificationService = $TeacherNotificationService;
+    }
+
+    public function crate($request, $teacher, $subject, $class_type){
+        $newtimestamp = strtotime($request->get('from') . ' + ' . $class_type->long . ' minute');
+        $to =  date('Y-m-d H:i:s', $newtimestamp);
+
+
+        $schedule = Available_class::create([
+            'teacher_id'            => $teacher->id,
+            'subject_id'            => $subject->id,
+            'class_type_id'         => $request->get('class_type_id'),
+            'from'                  => $request->get('from'),
+            'from_date'             => date('Y-m-d', strtotime($request->get('from'))),
+            'to'                    => $to,
+            'long'                  => $class_type->long,
+            'company_percentage'    => $this->get_company_percentage($teacher),
+            'note'                  => $request->get('note'),
+            'cost'                  => $class_type->long * $class_type->long_cost,
+        ]);
+
+        return $schedule;
+    }
+
+    public function cancel($available_class){
+        $available_class->status = -1;
+        $available_class->save();
+
+        //return mony for students whos pay mony for this class
+        $students_class = DB::table('student_class')
+                            ->where('available_class_id', $available_class->id)
+                            ->get();
+
+        if($students_class != Null){
+            foreach($students_class as $student_class){
+                $student = Student::find($student_class->student_id);
+
+                if($student_class->pay == 1){ //if student booking by free_classes
+                    $student->free +=1;
+                    $student->save();
+                } else {    //if student booking by mony in balance
+                    $available_class = Available_class::find($student_class->available_class_id);
+                    $student->balance += $available_class->cost;
+                    $student->save();
+                }
+            }
+        }
     }
 
     public function classIsComplete($available_class_id){
@@ -72,4 +120,5 @@ class AvailableClassService extends Controller
 
         return true;
     }
+    
 }

@@ -4,12 +4,9 @@ namespace App\Http\Controllers\site\teacher;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\answersResource;
-use App\Http\Resources\notificationResource;
 use App\Models\Answer;
-use App\Models\student_notification;
 use App\Models\Teacher;
 use App\Services\AnswerService;
-use App\Services\firbaseNotifications;
 use App\Services\StudentNotificationService;
 use App\Traits\response;
 use Illuminate\Http\Request;

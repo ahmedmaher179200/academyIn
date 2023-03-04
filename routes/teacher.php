@@ -17,9 +17,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 date_default_timezone_set('Africa/cairo');
 
 Route::group(['middleware' => ['changeLang'] ,'prefix' => 'teachers'], function(){
-    Route::post('/whiteboard/token', 'App\Http\Controllers\site\teacher\home@whiteboard');
-    Route::get('/test', 'App\Http\Controllers\site\teacher\home@test');
-
+    Route::post('/whiteboard/token', 'App\Http\Controllers\site\teacher\AgoraController@whiteboard');
 
     Route::post('login', 'App\Http\Controllers\site\teacher\authentication\AuthController@login');
     Route::post('register', 'App\Http\Controllers\site\teacher\authentication\AuthController@register');
@@ -57,14 +55,13 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'teachers'], function(
 
         Route::get('questions', 'App\Http\Controllers\site\teacher\QuestionController@index');
 
-        //pages
         Route::group(['prefix' => 'schedules'], function(){
-            Route::get('/', 'App\Http\Controllers\site\teacher\home@schedule');
-            Route::get('/date', 'App\Http\Controllers\site\teacher\home@schedule_date');
-            Route::get('/classes_type', 'App\Http\Controllers\site\teacher\home@class_type');
-            Route::post('add', 'App\Http\Controllers\site\teacher\home@add_schedule');
-            Route::post('cancel', 'App\Http\Controllers\site\teacher\home@cancel_schedule');
-            Route::post('/start', 'App\Http\Controllers\site\teacher\home@start_class');
+            Route::get('/', 'App\Http\Controllers\site\teacher\ScheduleController@schedule');
+            Route::get('/date', 'App\Http\Controllers\site\teacher\ScheduleController@schedule_date');
+            Route::get('/classes_type', 'App\Http\Controllers\site\teacher\ScheduleController@class_type');
+            Route::post('add', 'App\Http\Controllers\site\teacher\ScheduleController@create');
+            Route::post('cancel', 'App\Http\Controllers\site\teacher\ScheduleController@cancel');
+            Route::post('/start', 'App\Http\Controllers\site\teacher\ScheduleController@start_class');
         });
 
         Route::group(['prefix' => 'notifications'], function(){
@@ -72,7 +69,7 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'teachers'], function(
             Route::get('/notifications-count', 'App\Http\Controllers\site\teacher\NotificaitonController@notification_count');
         });
 
-        Route::get('/years', 'App\Http\Controllers\site\teacher\home@teacher_years');
+        Route::get('/years', 'App\Http\Controllers\site\teacher\HomeController@teacher_years');
 
 
         Route::post('logout', 'App\Http\Controllers\site\teacher\authentication\AuthController@logout');

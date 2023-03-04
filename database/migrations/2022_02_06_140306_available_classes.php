@@ -32,6 +32,8 @@ class AvailableClasses extends Migration
             $table->string('agora_token')->nullable();
             $table->string('agora_rtm_token')->nullable();
             $table->string('channel_name')->nullable();
+            $table->text('whiteboard_uuid')->nullable();
+            $table->text('whiteboard_teacher_token')->nullable();
             $table->timestamps();
 
             //relations
