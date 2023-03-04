@@ -9,9 +9,9 @@ use App\Traits\response;
 class AnswerService extends Controller
 {
     use response;
-    public function create($student_id, $question_id, $answer, $guard, $image = null){
+    public function create($user_id, $question_id, $answer, $guard, $image = null){
         $answer = Answer::create([
-            'answerable_id'    => $student_id,
+            'answerable_id'    => $user_id,
             'answerable_type'  => 'App\Models\\' . $guard,
             'question_id'      => $question_id,
             'answer'           => $answer,

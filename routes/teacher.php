@@ -48,11 +48,11 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'teachers'], function(
         });
 
         Route::group(['prefix' => 'answers'], function(){
-            Route::get('/', 'App\Http\Controllers\site\teacher\answers@index');
-            Route::get('/my-answers', 'App\Http\Controllers\site\teacher\answers@myAnswers');
-            Route::post('/create', 'App\Http\Controllers\site\teacher\answers@create');
-            Route::post('/delete', 'App\Http\Controllers\site\teacher\answers@delete');
-            Route::post('/edit', 'App\Http\Controllers\site\teacher\answers@update');
+            Route::get('/', 'App\Http\Controllers\site\teacher\AnswerController@index');
+            Route::get('/my-answers', 'App\Http\Controllers\site\teacher\AnswerController@myAnswers');
+            Route::post('/create', 'App\Http\Controllers\site\teacher\AnswerController@create');
+            Route::post('/delete', 'App\Http\Controllers\site\teacher\AnswerController@delete');
+            Route::post('/edit', 'App\Http\Controllers\site\teacher\AnswerController@update');
         });
 
         Route::get('questions', 'App\Http\Controllers\site\teacher\QuestionController@index');
@@ -68,9 +68,8 @@ Route::group(['middleware' => ['changeLang'] ,'prefix' => 'teachers'], function(
         });
 
         Route::group(['prefix' => 'notifications'], function(){
-            Route::get('/', 'App\Http\Controllers\site\teacher\notificaitons@index');
-            Route::get('/pagination', 'App\Http\Controllers\site\teacher\notificaitons@index_pagination');
-            Route::get('/notifications-count', 'App\Http\Controllers\site\teacher\notificaitons@notification_count');
+            Route::get('/', 'App\Http\Controllers\site\teacher\NotificaitonController@index');
+            Route::get('/notifications-count', 'App\Http\Controllers\site\teacher\NotificaitonController@notification_count');
         });
 
         Route::get('/years', 'App\Http\Controllers\site\teacher\home@teacher_years');
