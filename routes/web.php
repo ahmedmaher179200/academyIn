@@ -16,41 +16,31 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 date_default_timezone_set('Africa/cairo');
 
 Route::group(['middleware' => ['changeLang'] ,'prefix' => 'guest'], function(){
-    Route::get('/teachers_search', 'App\Http\Controllers\site\guest\search@search');
+    //teacher
+    Route::get('/teachers', 'App\Http\Controllers\site\guest\TeacherController@teachersBysubject');
+    Route::get('/onlineTeachers', 'App\Http\Controllers\site\guest\TeacherController@online_teachers_bysubject');
+    Route::get('teacher/profile', 'App\Http\Controllers\site\guest\TeacherController@show');
+    Route::get('/teachers_search', 'App\Http\Controllers\site\guest\TeacherController@index');
+    Route::get('/teachers-answers-questions', 'App\Http\Controllers\site\teacher\QuestionController@myAnswersQuestions');
 
-    Route::get('/Terms_and_Conditions', 'App\Http\Controllers\site\guest\home@Terms_and_Conditions');
+    //contact us
+    Route::post('/contact_us', 'App\Http\Controllers\site\guest\ContactUsController@create');
 
-    Route::get('/level_year', 'App\Http\Controllers\site\guest\search@level_year');
-    Route::get('/level_year_subjects', 'App\Http\Controllers\site\guest\search@level_year_subjects');
+    //subjects
+    Route::get('/subjects', 'App\Http\Controllers\site\guest\SubjectController@index');
+    Route::get('/subjects_year', 'App\Http\Controllers\site\guest\SubjectController@subjects_year');
+    Route::get('/materials', 'App\Http\Controllers\site\guest\SubjectController@materials');
 
-    Route::get('/subjects_year', 'App\Http\Controllers\site\guest\search@subjects_year');
-    Route::get('/subjects', 'App\Http\Controllers\site\guest\home@main_subjects');
-    Route::get('/all-subjects', 'App\Http\Controllers\site\guest\home@subjects');
+    //stduent
+    Route::get('student/profile', 'App\Http\Controllers\site\guest\StudentController@show');
 
-    Route::get('/teacher-answers', 'App\Http\Controllers\site\teacher\answers@teacher_answers');
-    Route::get('/teachers-answers-questions', 'App\Http\Controllers\site\teacher\questions@myAnswersQuestions');
-
-
-    //get teacher by subject_id
-    Route::get('/teachers', 'App\Http\Controllers\site\guest\home@teachersBysubject');
-    Route::get('/onlineTeachers', 'App\Http\Controllers\site\guest\home@online_teachers_bysubject');
-
-
-    Route::get('/classes_types_cost', 'App\Http\Controllers\site\guest\home@classes_type_cost');
-
-    Route::get('/countries', 'App\Http\Controllers\site\guest\home@countries');
-    Route::get('/curriculums', 'App\Http\Controllers\site\guest\home@curriculums');
-
-    Route::get('/answers', 'App\Http\Controllers\site\guest\home@answers');
-    Route::get('/questions', 'App\Http\Controllers\site\guest\home@questions');
-
-
-    Route::get('student/profile', 'App\Http\Controllers\site\student\authentication\ProfileController@index');
-    Route::get('teacher/profile', 'App\Http\Controllers\site\teacher\authentication\profile@index');
-
-    Route::get('/materials', 'App\Http\Controllers\site\guest\home@materials');
-    Route::post('/contact_us', 'App\Http\Controllers\site\guest\home@contact_us');
-
-    Route::get('/test', 'App\Http\Controllers\Controller@test');
-
+    //home
+    Route::get('/countries', 'App\Http\Controllers\site\guest\HomeController@countries');
+    Route::get('/answers', 'App\Http\Controllers\site\guest\HomeController@answers');
+    Route::get('/questions', 'App\Http\Controllers\site\guest\HomeController@questions');
+    Route::get('/curriculums', 'App\Http\Controllers\site\guest\HomeController@curriculums');
+    Route::get('/level_year', 'App\Http\Controllers\site\guest\HomeController@level_year');
+    Route::get('/level_year_subjects', 'App\Http\Controllers\site\guest\HomeController@level_year_subjects');
+    Route::get('/classes_types_cost', 'App\Http\Controllers\site\guest\HomeController@classes_type_cost');
+    Route::get('/Terms_and_Conditions', 'App\Http\Controllers\site\guest\HomeController@Terms_and_Conditions');
 });

@@ -25,18 +25,6 @@ class ProfileController extends Controller
     {
         $this->TeacherService         = $TeacherService;
     }
-    public function index(Request $request){
-        $validator = Validator::make($request->all(), [
-            'teacher_id'       => 'required|string|exists:teachers,id',
-        ]);
-
-        if($validator->fails())
-            return $this::faild($validator->errors()->first(), 403);
-
-        $teacher = Teacher::find($request->teacher_id);
-
-        return $this->success(trans('auth.success'), 200, 'teacher', new teacherResource($teacher));
-    }
 
     public function myProfile(){
         $teacher = auth('teacher')->user();
